@@ -1,17 +1,48 @@
 package de.lokaizyk.popularmovies.ui.fragments;
 
+import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
-import android.os.Handler;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.Toast;
+
+import java.util.List;
 
 import de.lokaizyk.popularmovies.R;
 import de.lokaizyk.popularmovies.databinding.FragmentMoviesBinding;
+import de.lokaizyk.popularmovies.logic.MoviesProvider;
+import de.lokaizyk.popularmovies.logic.model.MovieModel;
+import de.lokaizyk.popularmovies.ui.adapter.BaseBindingAdapter;
+import de.lokaizyk.popularmovies.ui.adapter.MovieAdapter;
 
 /**
  * Created by lars on 12.09.16.
  */
-public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> {
+public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> implements BaseBindingAdapter.OnItemClickListener<MovieModel> {
 
     public ObservableBoolean isLoading = new ObservableBoolean(true);
+
+    public ObservableArrayList<MovieModel> movies = new ObservableArrayList<>();
+
+    private MoviesProvider.RequestListener<List<MovieModel>> moviesListener = new MoviesProvider.RequestListener<List<MovieModel>>() {
+        @Override
+        public void onSuccess(List<MovieModel> data) {
+            updateMovies(data);
+            isLoading.set(false);
+        }
+
+        @Override
+        public void onError(String cause) {
+            // TODO: 12.09.16 implement
+        }
+    };
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getBinding().movieGrid.setAdapter(new MovieAdapter());
+    }
 
     @Override
     protected int getLayoutId() {
@@ -26,11 +57,18 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> {
     @Override
     public void onStart() {
         super.onStart();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                isLoading.set(false);
-            }
-        }, 1000);
+        MoviesProvider.loadMovies(MoviesProvider.RequestType.POPULAR, moviesListener);
+    }
+
+    @Override
+    public void onItemSelected(int position, MovieModel item) {
+        Toast.makeText(getContext(), "ID=" + item.getMovieId(), Toast.LENGTH_SHORT).show();
+    }
+
+    private void updateMovies(List<MovieModel> newMovies) {
+        if (newMovies != null) {
+            movies.clear();
+            movies.addAll(newMovies);
+        }
     }
 }
