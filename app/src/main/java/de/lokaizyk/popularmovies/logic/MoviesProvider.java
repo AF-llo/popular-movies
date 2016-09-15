@@ -1,7 +1,5 @@
 package de.lokaizyk.popularmovies.logic;
 
-import android.util.Log;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -9,6 +7,7 @@ import java.util.List;
 import de.lokaizyk.popularmovies.BuildConfig;
 import de.lokaizyk.popularmovies.logic.model.MovieDetails;
 import de.lokaizyk.popularmovies.logic.model.MovieModel;
+import de.lokaizyk.popularmovies.network.MovieDetailsParser;
 import de.lokaizyk.popularmovies.network.MoviesParser;
 import de.lokaizyk.popularmovies.network.RequestHelper;
 import de.lokaizyk.popularmovies.network.RequestTask;
@@ -30,8 +29,12 @@ public class MoviesProvider {
     }
 
     public static void loadMovieDetails(String movieId, RequestListener<MovieDetails> listener) {
-        Log.d(TAG, "load details for ID=" + movieId );
-        // TODO: 12.09.16 implement
+        try {
+            URL movieDetailsUrl = new URL(RequestHelper.getMovieDetailsUrl(BuildConfig.BASE_MOVIE_URL + movieId));
+            new RequestTask<>(listener, new MovieDetailsParser()).execute(movieDetailsUrl);
+        } catch (IOException e) {
+            onError(e.getMessage(), listener);
+        }
     }
 
     private static void onError(String cause, RequestListener listener) {

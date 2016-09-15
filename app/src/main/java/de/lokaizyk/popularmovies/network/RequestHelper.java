@@ -20,8 +20,11 @@ public class RequestHelper {
         return buildUri.toString();
     }
 
-    public static String getMovieDetailsUrl(String movieId) {
-        return "";
+    public static String getMovieDetailsUrl(String baseMovieDetailsUrl) {
+        Uri buildUri = Uri.parse(baseMovieDetailsUrl).buildUpon()
+                .appendQueryParameter(PARAM_API_KEY, BuildConfig.MOVIESDB_API_KEY)
+                .build();
+        return buildUri.toString();
     }
 
 }
