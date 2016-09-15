@@ -15,6 +15,7 @@ import de.lokaizyk.popularmovies.logic.MoviesProvider;
 import de.lokaizyk.popularmovies.logic.model.MovieModel;
 import de.lokaizyk.popularmovies.ui.adapter.BaseBindingAdapter;
 import de.lokaizyk.popularmovies.ui.adapter.MovieAdapter;
+import de.lokaizyk.popularmovies.util.PrefHelper;
 
 /**
  * Created by lars on 12.09.16.
@@ -57,7 +58,7 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
     @Override
     public void onStart() {
         super.onStart();
-        MoviesProvider.loadMovies(MoviesProvider.RequestType.POPULAR, moviesListener);
+        MoviesProvider.loadMovies(PrefHelper.getSortingSettings(getContext()), moviesListener);
     }
 
     @Override
