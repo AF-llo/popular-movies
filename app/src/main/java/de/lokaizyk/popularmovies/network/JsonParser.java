@@ -7,6 +7,8 @@ import org.json.JSONException;
  */
 public interface JsonParser<T> {
 
+    // movies list
+
     String KEY_RESULTS = "results";
 
     String KEY_ID = "id";
@@ -14,6 +16,12 @@ public interface JsonParser<T> {
     String KEY_POSTER_PATH = "poster_path";
 
     String KEY_TITLE = "title";
+
+    String KEY_OVERVIEW = "overview";
+
+    String KEY_VOTING = "vote_average";
+
+    String KEY_RELEASE_DATE = "release_date";
 
     T parseJson(String json) throws JSONException;
 }

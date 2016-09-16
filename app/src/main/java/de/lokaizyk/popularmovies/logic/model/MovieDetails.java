@@ -5,13 +5,53 @@ package de.lokaizyk.popularmovies.logic.model;
  */
 public class MovieDetails {
 
-    private String name = "";
+    private String title = "";
 
-    public String getName() {
-        return name;
+    private String overview = "";
+
+    private String imageUrl = "";
+
+    private String votingRate = "";
+
+    private String releaseDate = "";
+
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getVotingRate() {
+        return votingRate;
+    }
+
+    public void setVotingRate(String votingRate) {
+        this.votingRate = votingRate;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 }
