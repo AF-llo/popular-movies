@@ -23,5 +23,7 @@ public interface JsonParser<T> {
 
     String KEY_RELEASE_DATE = "release_date";
 
+    String KEY_RUNTIME = "runtime";
+
     T parseJson(String json) throws JSONException;
 }

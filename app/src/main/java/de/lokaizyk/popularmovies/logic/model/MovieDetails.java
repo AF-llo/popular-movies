@@ -5,6 +5,12 @@ package de.lokaizyk.popularmovies.logic.model;
  */
 public class MovieDetails {
 
+    private static final String RATING_SEPERATOR = "/";
+
+    private static final String MAX_RATING = "10";
+
+    private static final String MIN_SUFFIX = "min";
+
     private String title = "";
 
     private String overview = "";
@@ -14,6 +20,8 @@ public class MovieDetails {
     private String votingRate = "";
 
     private String releaseDate = "";
+
+    private String length = "";
 
     public String getTitle() {
         return title;
@@ -40,7 +48,7 @@ public class MovieDetails {
     }
 
     public String getVotingRate() {
-        return votingRate;
+        return votingRate + RATING_SEPERATOR + MAX_RATING;
     }
 
     public void setVotingRate(String votingRate) {
@@ -53,5 +61,13 @@ public class MovieDetails {
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public String getLength() {
+        return length + MIN_SUFFIX;
+    }
+
+    public void setLength(String length) {
+        this.length = length;
     }
 }

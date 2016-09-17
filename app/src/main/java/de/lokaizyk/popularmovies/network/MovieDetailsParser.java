@@ -54,7 +54,20 @@ public class MovieDetailsParser implements JsonParser<MovieDetails> {
 
         if (detailsObject.has(JsonParser.KEY_VOTING)) {
             double voting = detailsObject.getDouble(JsonParser.KEY_VOTING);
-            details.setVotingRate(String.valueOf(voting));
+            try {
+                details.setVotingRate(String.valueOf(voting));
+            } catch (NumberFormatException nfe) {
+                Log.e(TAG, nfe.getMessage());
+            }
+        }
+
+        if (detailsObject.has(JsonParser.KEY_RUNTIME)) {
+            int length = detailsObject.getInt(JsonParser.KEY_RUNTIME);
+            try {
+                details.setLength(String.valueOf(length));
+            } catch (NumberFormatException nfe) {
+                Log.e(TAG, nfe.getMessage());
+            }
         }
 
         return details;
