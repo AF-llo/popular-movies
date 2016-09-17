@@ -3,7 +3,11 @@ package de.lokaizyk.popularmovies.ui.fragments;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import de.lokaizyk.popularmovies.R;
 import de.lokaizyk.popularmovies.databinding.FragmentMovieDetailsBinding;
@@ -16,7 +20,13 @@ import de.lokaizyk.popularmovies.ui.activities.MovieDetailsActivity;
  */
 public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetailsBinding> implements MoviesProvider.RequestListener<MovieDetails> {
 
-    public ObservableBoolean isLoading = new ObservableBoolean(true);
+    private static final String TAG = MovieDetailsFragment.class.getSimpleName();
+
+    private static final String EXTRA_ISLOADING = "extraKeyIsLoading";
+
+    private static final String EXTRA_MOVIE_DETAILS = "extraKeyMovieDetails";
+
+    public ObservableBoolean isLoading = new ObservableBoolean(false);
     
     public ObservableField<MovieDetails> movieDetails = new ObservableField<>();
 
@@ -26,6 +36,22 @@ public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetai
         arguments.putString(MovieDetailsActivity.EXTRAS_MOVIE_ID, movieId);
         fragment.setArguments(arguments);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (savedInstanceState != null) {
+            Log.d(TAG, "retain savedInstanceState");
+            isLoading = savedInstanceState.getParcelable(EXTRA_ISLOADING);
+            movieDetails = new ObservableField<>((MovieDetails)savedInstanceState.getParcelable(EXTRA_MOVIE_DETAILS));
+        }
     }
 
     @Override
@@ -41,9 +67,21 @@ public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetai
     @Override
     public void onStart() {
         super.onStart();
-        if (movieDetails.get() == null) {
+        loadMovieDetails();
+    }
+
+    private void loadMovieDetails() {
+        if (!isLoading.get() && movieDetails.get() == null) {
+            isLoading.set(true);
             MoviesProvider.loadMovieDetails(getArguments().getString(MovieDetailsActivity.EXTRAS_MOVIE_ID), this);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(EXTRA_MOVIE_DETAILS, movieDetails.get());
+        outState.putParcelable(EXTRA_ISLOADING, isLoading);
     }
 
     @Override
@@ -54,6 +92,9 @@ public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetai
 
     @Override
     public void onError(String cause) {
-        // TODO: 15.09.16
+        if (isAdded()) {
+            isLoading.set(false);
+            Toast.makeText(getContext(), getContext().getString(R.string.error), Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -30,6 +30,10 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
 
     private static final String TAG = MoviesFragment.class.getSimpleName();
 
+    private static final String EXTRA_MOVIES = "extraKeyMovies";
+
+    private static final String EXTRA_ISLOADING = "extraKeyLoading";
+
     public ObservableBoolean isLoading = new ObservableBoolean(false);
 
     public ObservableArrayList<MovieModel> movies = new ObservableArrayList<>();
@@ -54,12 +58,19 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getBinding().movieGrid.setAdapter(new MovieAdapter());
+        if (savedInstanceState != null) {
+            Log.d(TAG, "retain savedInstanceState");
+            movies = (ObservableArrayList) savedInstanceState.getParcelableArrayList(EXTRA_MOVIES);
+            isLoading = savedInstanceState.getParcelable(EXTRA_ISLOADING);
+        }
     }
 
     @Override
@@ -76,6 +87,13 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
     public void onStart() {
         super.onStart();
         refreshMovies();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(EXTRA_MOVIES, movies);
+        outState.putParcelable(EXTRA_ISLOADING, isLoading);
     }
 
     @Override

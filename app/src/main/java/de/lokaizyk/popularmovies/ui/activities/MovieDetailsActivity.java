@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -27,9 +28,13 @@ public class MovieDetailsActivity extends BaseBindingActivity<ActivityMovieDetai
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(MovieDetailsFragment.class.getSimpleName());
+        if (fragment == null) {
+            fragment = MovieDetailsFragment.get(getIntent().getExtras().getString(EXTRAS_MOVIE_ID));
+        }
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, MovieDetailsFragment.get(getIntent().getExtras().getString(EXTRAS_MOVIE_ID)))
+                .replace(R.id.fragment_container, fragment, MovieDetailsFragment.class.getSimpleName())
                 .commitAllowingStateLoss();
     }
 
