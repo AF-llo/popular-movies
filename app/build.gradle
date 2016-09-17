@@ -18,9 +18,8 @@ android {
         }
     }
 
-    buildTypes.each {
-        // todo remove before pushing into git
-        it.buildConfigField 'String', 'MOVIESDB_API_KEY', '"457076eb1307cb302a9ce7733d65b878"'
+    buildTypes.each {                                      // Put API_KEY here for requests
+        it.buildConfigField 'String', 'MOVIESDB_API_KEY', '"[API_KEY]"'
         it.buildConfigField 'String', 'BASE_MOVIE_URL', '"https://api.themoviedb.org/3/movie/"'
         it.buildConfigField 'String', 'BASE_IMAGE_URL', '"http://image.tmdb.org/t/p/w342"'
     }
