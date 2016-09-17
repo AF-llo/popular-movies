@@ -30,6 +30,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.lokaizyk.popularmovies.ui.activities.MoviesActivity"/>
         </activity>
+
+        <activity
+            android:name=".ui.activities.SettingsActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/settings"
+            android:parentActivityName=".ui.activities.MoviesActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.lokaizyk.popularmovies.ui.activities.MoviesActivity"/>
+    </activity>
     </application>
 
 </manifest>

@@ -41,7 +41,9 @@ public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetai
     @Override
     public void onStart() {
         super.onStart();
-        MoviesProvider.loadMovieDetails(getArguments().getString(MovieDetailsActivity.EXTRAS_MOVIE_ID), this);
+        if (movieDetails.get() == null) {
+            MoviesProvider.loadMovieDetails(getArguments().getString(MovieDetailsActivity.EXTRAS_MOVIE_ID), this);
+        }
     }
 
     @Override

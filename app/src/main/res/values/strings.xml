@@ -8,4 +8,8 @@
     <string name="pref_label_sorting_top_rated">Top rated</string>
     <string name="pref_value_sorting_top_rated">top_rated</string>
     <string name="pref_value_sorting_default">@string/pref_value_sorting_popular</string>
+    <string name="pref_label_sorting">Sorting</string>
+    <string name="settings">Settings</string>
+    <string name="refresh">Refresh</string>
+    <string name="error">Something went wrong. Please try again later.</string>
 </resources>

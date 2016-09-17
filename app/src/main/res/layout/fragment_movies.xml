@@ -14,8 +14,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="@{moviesFragment.isLoading ? View.GONE : View.VISIBLE}">
+            android:layout_height="match_parent">
 
             <GridView
                 android:id="@+id/movie_grid"
