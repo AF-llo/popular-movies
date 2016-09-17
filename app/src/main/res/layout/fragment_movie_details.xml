@@ -13,90 +13,96 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="@{movieDetailsFragment.isLoading ? View.GONE : View.VISIBLE}">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:visibility="@{movieDetailsFragment.isLoading ? View.GONE : View.VISIBLE}">
 
-                <TextView
-                    style="@style/text_header"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/spacing_m"
-                    android:paddingRight="@dimen/spacing_m"
-                    android:paddingTop="@dimen/spacing_xl"
-                    android:paddingBottom="@dimen/spacing_xl"
-                    android:text="@{movieDetailsFragment.movieDetails.title}"
-                    tools:text="Captain America: Civil War"/>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_m"
-                    android:layout_marginLeft="@dimen/spacing_m"
-                    android:layout_marginRight="@dimen/spacing_m">
-
-                    <ImageView
-                        android:id="@+id/image_thumb"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/image_thumb_height"
-                        app:photoPath="@{movieDetailsFragment.movieDetails.imageUrl}"/>
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/release_date"
-                        android:layout_width="wrap_content"
+                        style="@style/text_header"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_l"
-                        android:layout_marginLeft="@dimen/spacing_xl"
-                        android:layout_toRightOf="@id/image_thumb"
-                        android:text="@{movieDetailsFragment.movieDetails.releaseDate}"
-                        tools:text="2015-10-5"/>
+                        android:paddingLeft="@dimen/spacing_m"
+                        android:paddingRight="@dimen/spacing_m"
+                        android:paddingTop="@dimen/spacing_xl"
+                        android:paddingBottom="@dimen/spacing_xl"
+                        android:text="@{movieDetailsFragment.movieDetails.title}"
+                        tools:text="Captain America: Civil War"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_m"
+                        android:layout_marginLeft="@dimen/spacing_m"
+                        android:layout_marginRight="@dimen/spacing_m">
+
+                        <ImageView
+                            android:id="@+id/image_thumb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/image_thumb_height"
+                            app:photoPath="@{movieDetailsFragment.movieDetails.imageUrl}"/>
+
+                        <TextView
+                            android:id="@+id/release_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/text_size_l"
+                            android:layout_marginLeft="@dimen/spacing_xl"
+                            android:layout_toRightOf="@id/image_thumb"
+                            android:text="@{movieDetailsFragment.movieDetails.releaseDate}"
+                            tools:text="2015-10-5"/>
+
+                        <TextView
+                            android:id="@+id/voting_rate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_xs"
+                            android:layout_marginLeft="@dimen/spacing_xl"
+                            android:layout_toRightOf="@id/image_thumb"
+                            android:textSize="@dimen/text_size_m"
+                            android:layout_below="@id/release_date"
+                            android:text="@{movieDetailsFragment.movieDetails.votingRate}"
+                            tools:text="8.5/10"/>
+
+                        <TextView
+                            android:id="@+id/length"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/spacing_xl"
+                            android:layout_marginTop="@dimen/text_size_xs"
+                            android:layout_toRightOf="@+id/image_thumb"
+                            android:textStyle="italic"
+                            android:textSize="@dimen/text_size_s"
+                            android:layout_below="@id/voting_rate"
+                            android:text="@{movieDetailsFragment.movieDetails.length}"
+                            tools:text="120min"/>
+
+                    </RelativeLayout>
 
                     <TextView
-                        android:id="@+id/voting_rate"
-                        android:layout_width="wrap_content"
+                        style="@style/text_dexscription"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_xs"
-                        android:layout_marginLeft="@dimen/spacing_xl"
-                        android:layout_toRightOf="@id/image_thumb"
-                        android:textSize="@dimen/text_size_m"
-                        android:layout_below="@id/release_date"
-                        android:text="@{movieDetailsFragment.movieDetails.votingRate}"
-                        tools:text="8.5/10"/>
+                        android:layout_marginTop="@dimen/spacing_m"
+                        android:layout_marginLeft="@dimen/spacing_m"
+                        android:layout_marginRight="@dimen/spacing_m"
+                        android:text="@{movieDetailsFragment.movieDetails.overview}"
+                        tools:text="Captain America: Civil War"/>
 
-                    <TextView
-                        android:id="@+id/length"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/spacing_xl"
-                        android:layout_marginTop="@dimen/text_size_xs"
-                        android:layout_toRightOf="@+id/image_thumb"
-                        android:textStyle="italic"
-                        android:textSize="@dimen/text_size_s"
-                        android:layout_below="@id/voting_rate"
-                        android:text="@{movieDetailsFragment.movieDetails.length}"
-                        tools:text="120min"/>
+                </LinearLayout>
 
-                </RelativeLayout>
+            </FrameLayout>
 
-                <TextView
-                    style="@style/text_dexscription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_m"
-                    android:layout_marginLeft="@dimen/spacing_m"
-                    android:layout_marginRight="@dimen/spacing_m"
-                    android:text="@{movieDetailsFragment.movieDetails.overview}"
-                    tools:text="Captain America: Civil War"/>
-
-            </LinearLayout>
-
-        </FrameLayout>
+        </ScrollView>
 
         <ProgressBar
             android:layout_width="wrap_content"

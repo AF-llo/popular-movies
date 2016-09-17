@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Popular Movies</string>
+    <string name="movie_details">Movie Details</string>
+
     <string name="pref_key_sorting">keySorting</string>
     <string name="pref_label_sorting_popular">Popular</string>
     <string name="pref_value_sorting_popular">popular</string>
