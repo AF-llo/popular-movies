@@ -35,12 +35,7 @@ public abstract class BaseBindingRecyclerAdapter<T> extends RecyclerView.Adapter
         holder.bindItemItem(item);
         if (mOnItemClickListener != null){
             View view = holder.itemView;
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mOnItemClickListener.onItemClicked(item, holder.getAdapterPosition());
-                }
-            });
+            view.setOnClickListener(v -> mOnItemClickListener.onItemClicked(item, holder.getAdapterPosition()));
         }
     }
 
