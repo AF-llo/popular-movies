@@ -13,23 +13,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.lokaizyk.popularmovies.R;
 import de.lokaizyk.popularmovies.databinding.FragmentMoviesBinding;
 import de.lokaizyk.popularmovies.logic.MoviesProvider;
 import de.lokaizyk.popularmovies.logic.model.MovieModel;
-import de.lokaizyk.popularmovies.network.model.BackendMovie;
-import de.lokaizyk.popularmovies.network.model.MoviesResponse;
 import de.lokaizyk.popularmovies.ui.activities.MovieDetailsActivity;
 import de.lokaizyk.popularmovies.ui.activities.SettingsActivity;
 import de.lokaizyk.popularmovies.ui.adapter.BaseBindingRecyclerAdapter;
 import de.lokaizyk.popularmovies.ui.adapter.MoviesRecyclerAdapter;
 import de.lokaizyk.popularmovies.util.PrefHelper;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by lars on 12.09.16.
@@ -46,21 +40,15 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
 
     public ObservableArrayList<MovieModel> movies = new ObservableArrayList<>();
 
-    private Callback<MoviesResponse> mMoviesResponseCallback = new Callback<MoviesResponse>() {
+    private MoviesProvider.RequestListener<List<MovieModel>> moviesListener = new MoviesProvider.RequestListener<List<MovieModel>>() {
         @Override
-        public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
-            // TODO: 03.10.16 concept to sync database -> SyncAdapter
-            MoviesResponse moviesResponse = response.body();
-            List<MovieModel> movies = new ArrayList<>();
-            for (BackendMovie backendMovie : moviesResponse.getResults()) {
-                movies.add(new MovieModel(backendMovie.getPosterPath(), String.valueOf(backendMovie.getId())));
-            }
-            updateMovies(movies);
+        public void onSuccess(List<MovieModel> data) {
+            updateMovies(data);
         }
 
         @Override
-        public void onFailure(Call<MoviesResponse> call, Throwable t) {
-            Log.e(TAG, t.getMessage());
+        public void onError(String cause) {
+            Log.e(TAG, cause);
             if (isAdded()) {
                 isLoading.set(false);
                 Toast.makeText(getContext(), getString(R.string.error), Toast.LENGTH_SHORT).show();
@@ -134,7 +122,7 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
     private void refreshMovies() {
         if (!isLoading.get()) {
             isLoading.set(true);
-            MoviesProvider.loadMovies(PrefHelper.getSortingSettings(getContext()), mMoviesResponseCallback);
+            MoviesProvider.loadMovies(PrefHelper.getSortingSettings(getContext()), moviesListener);
         }
     }
 

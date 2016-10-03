@@ -1,10 +1,11 @@
 package de.lokaizyk.popularmovies.network.api;
 
+import de.lokaizyk.popularmovies.network.model.MovieDetailsResponse;
 import de.lokaizyk.popularmovies.network.model.MoviesResponse;
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import rx.Observable;
 
 /**
  * Created by lars on 03.10.16.
@@ -18,9 +19,16 @@ public interface PopularMoviesApi {
 
     String PARAM_SORTING = "sorting";
 
-    String URL_MOVIES_SORTING = MOVIES_URL + "{" + PARAM_SORTING + "}";
+    String PARAM_MOVIE_ID = "movieId";
 
-    @GET(URL_MOVIES_SORTING)
-    public Call<MoviesResponse> loadMovies(@Path(PARAM_SORTING) String sorting, @Query(PARAM_API_KEY) String apiKey);
+    String SORTED_MOVIES_URL = MOVIES_URL + "{" + PARAM_SORTING + "}";
+
+    String MOVIE_DETAILS_URL = MOVIES_URL + "{" + PARAM_MOVIE_ID + "}";
+
+    @GET(SORTED_MOVIES_URL)
+    Observable<MoviesResponse> getMoviesObservable(@Path(PARAM_SORTING) String sorting, @Query(PARAM_API_KEY) String apiKey);
+
+    @GET(MOVIE_DETAILS_URL)
+    Observable<MovieDetailsResponse> getMovieDetailsObservable(@Path(PARAM_MOVIE_ID) String movieId, @Query(PARAM_API_KEY) String apiKey);
 
 }

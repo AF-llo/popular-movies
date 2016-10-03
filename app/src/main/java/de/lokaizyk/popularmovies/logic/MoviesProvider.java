@@ -1,18 +1,16 @@
 package de.lokaizyk.popularmovies.logic;
 
-import java.io.IOException;
-import java.net.URL;
+import java.util.List;
 
 import de.lokaizyk.popularmovies.BuildConfig;
 import de.lokaizyk.popularmovies.logic.model.MovieDetails;
-import de.lokaizyk.popularmovies.network.MovieDetailsParser;
-import de.lokaizyk.popularmovies.network.RequestHelper;
-import de.lokaizyk.popularmovies.network.RequestTask;
+import de.lokaizyk.popularmovies.logic.model.MovieModel;
+import de.lokaizyk.popularmovies.network.rx.MovieDetailsSubscriber;
+import de.lokaizyk.popularmovies.network.rx.MoviesSubscriber;
 import de.lokaizyk.popularmovies.network.api.PopularMoviesApi;
 import de.lokaizyk.popularmovies.network.api.PopularMoviesApiFactory;
-import de.lokaizyk.popularmovies.network.model.MoviesResponse;
-import retrofit2.Call;
-import retrofit2.Callback;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by lars on 12.09.16.
@@ -21,28 +19,26 @@ public class MoviesProvider {
 
     private static final String TAG = MoviesProvider.class.getSimpleName();
 
-    public static void loadMovies(String sorting, Callback<MoviesResponse> callback) {
+    public static void loadMovies(String sorting, RequestListener<List<MovieModel>> listener) {
         PopularMoviesApi moviesApi = PopularMoviesApiFactory.getInstance().createService();
-        Call<MoviesResponse> moviesResponseCall = moviesApi.loadMovies(sorting, BuildConfig.MOVIESDB_API_KEY);
-        moviesResponseCall.enqueue(callback);
+        moviesApi.getMoviesObservable(sorting, BuildConfig.MOVIESDB_API_KEY)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MoviesSubscriber(listener));
     }
 
-    // TODO: 03.10.16 load movie details with retrofit 
     public static void loadMovieDetails(String movieId, RequestListener<MovieDetails> listener) {
-        try {
-            URL movieDetailsUrl = new URL(RequestHelper.getMovieDetailsUrl(BuildConfig.BASE_MOVIE_URL + movieId));
-            new RequestTask<>(listener, new MovieDetailsParser()).execute(movieDetailsUrl);
-        } catch (IOException e) {
-            onError(e.getMessage(), listener);
-        }
+        PopularMoviesApi moviesApi = PopularMoviesApiFactory.getInstance().createService();
+        moviesApi.getMovieDetailsObservable(movieId, BuildConfig.MOVIESDB_API_KEY)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MovieDetailsSubscriber(listener));
     }
 
-    private static void onError(String cause, RequestListener listener) {
-        if (listener != null && cause != null) {
-            listener.onError(cause);
-        }
-    }
-
+    /**
+     * This interface should be implemented to display the result of a request
+     * @param <T>
+     */
     public interface RequestListener<T> {
         void onSuccess(T data);
         void onError(String cause);
