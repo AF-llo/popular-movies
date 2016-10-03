@@ -9,7 +9,7 @@ import java.util.List;
  * Created by lars on 03.10.16.
  */
 
-public class BackendMovie {
+public class MovieResult {
 
     @SerializedName("poster_path")
     private String posterPath;

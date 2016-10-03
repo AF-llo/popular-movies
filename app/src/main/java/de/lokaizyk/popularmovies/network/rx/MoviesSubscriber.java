@@ -5,7 +5,7 @@ import java.util.List;
 
 import de.lokaizyk.popularmovies.logic.MoviesProvider;
 import de.lokaizyk.popularmovies.logic.model.MovieModel;
-import de.lokaizyk.popularmovies.network.model.BackendMovie;
+import de.lokaizyk.popularmovies.network.model.MovieResult;
 import de.lokaizyk.popularmovies.network.model.MoviesResponse;
 
 /**
@@ -25,8 +25,8 @@ public class MoviesSubscriber extends RequestSubscriber<List<MovieModel>, Movies
             return;
         }
         List<MovieModel> movies = new ArrayList<>();
-        for (BackendMovie backendMovie : moviesResponse.getResults()) {
-            movies.add(new MovieModel(backendMovie.getPosterPath(), String.valueOf(backendMovie.getId())));
+        for (MovieResult movieResult : moviesResponse.getResults()) {
+            movies.add(new MovieModel(movieResult.getPosterPath(), String.valueOf(movieResult.getId())));
         }
         onSuccess(movies);
     }

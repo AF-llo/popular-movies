@@ -7,9 +7,13 @@ import java.util.List;
 import de.lokaizyk.popularmovies.BuildConfig;
 import de.lokaizyk.popularmovies.logic.model.MovieDetails;
 import de.lokaizyk.popularmovies.logic.model.MovieModel;
+import de.lokaizyk.popularmovies.logic.model.MovieReview;
+import de.lokaizyk.popularmovies.logic.model.MovieVideo;
 import de.lokaizyk.popularmovies.network.api.PopularMoviesApi;
 import de.lokaizyk.popularmovies.network.api.PopularMoviesApiFactory;
 import de.lokaizyk.popularmovies.network.rx.MovieDetailsSubscriber;
+import de.lokaizyk.popularmovies.network.rx.MovieReviewsSubscriber;
+import de.lokaizyk.popularmovies.network.rx.MovieTrailersSubscriber;
 import de.lokaizyk.popularmovies.network.rx.MoviesSubscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -40,6 +44,24 @@ public class MoviesProvider {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new MovieDetailsSubscriber(listener));
+        mSubscriptionList.add(movieDetailsSubscription);
+    }
+
+    public static void loadMovieTrailers(String movieId, RequestListener<MovieVideo> listener) {
+        PopularMoviesApi moviesApi = PopularMoviesApiFactory.getInstance().createService();
+        Subscription movieDetailsSubscription = moviesApi.getMovieVideosObservable(movieId, BuildConfig.MOVIESDB_API_KEY)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MovieTrailersSubscriber(listener));
+        mSubscriptionList.add(movieDetailsSubscription);
+    }
+
+    public static void loadMovieReviews(String movieId, RequestListener<MovieReview> listener) {
+        PopularMoviesApi moviesApi = PopularMoviesApiFactory.getInstance().createService();
+        Subscription movieDetailsSubscription = moviesApi.getMovieReviewsObservable(movieId, BuildConfig.MOVIESDB_API_KEY)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MovieReviewsSubscriber(listener));
         mSubscriptionList.add(movieDetailsSubscription);
     }
 

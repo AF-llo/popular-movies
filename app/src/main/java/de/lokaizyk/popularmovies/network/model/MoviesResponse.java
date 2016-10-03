@@ -12,13 +12,13 @@ import java.util.List;
 public class MoviesResponse {
 
     @SerializedName("results")
-    private List<BackendMovie> results = new ArrayList<BackendMovie>();
+    private List<MovieResult> results = new ArrayList<MovieResult>();
 
-    public List<BackendMovie> getResults() {
+    public List<MovieResult> getResults() {
         return results;
     }
 
-    public void setResults(List<BackendMovie> results) {
+    public void setResults(List<MovieResult> results) {
         this.results = results;
     }
 
