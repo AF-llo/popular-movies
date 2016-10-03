@@ -4,6 +4,8 @@ import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,14 +21,14 @@ import de.lokaizyk.popularmovies.logic.MoviesProvider;
 import de.lokaizyk.popularmovies.logic.model.MovieModel;
 import de.lokaizyk.popularmovies.ui.activities.MovieDetailsActivity;
 import de.lokaizyk.popularmovies.ui.activities.SettingsActivity;
-import de.lokaizyk.popularmovies.ui.adapter.BaseBindingAdapter;
-import de.lokaizyk.popularmovies.ui.adapter.MovieAdapter;
+import de.lokaizyk.popularmovies.ui.adapter.BaseBindingRecyclerAdapter;
+import de.lokaizyk.popularmovies.ui.adapter.MoviesRecyclerAdapter;
 import de.lokaizyk.popularmovies.util.PrefHelper;
 
 /**
  * Created by lars on 12.09.16.
  */
-public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> implements BaseBindingAdapter.OnItemClickListener<MovieModel> {
+public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> implements BaseBindingRecyclerAdapter.OnItemClickListener<MovieModel> {
 
     private static final String TAG = MoviesFragment.class.getSimpleName();
 
@@ -65,7 +67,11 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getBinding().movieGrid.setAdapter(new MovieAdapter());
+        RecyclerView recyclerView = getBinding().movieList;
+        BaseBindingRecyclerAdapter adapter = new MoviesRecyclerAdapter();
+        int columnCount = 2; // TODO: 03.10.16 adapt for tablet layout
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), columnCount));
+        recyclerView.setAdapter(adapter);
         if (savedInstanceState != null) {
             Log.d(TAG, "retain savedInstanceState");
             movies = (ObservableArrayList) savedInstanceState.getParcelableArrayList(EXTRA_MOVIES);
@@ -121,7 +127,7 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
     }
 
     @Override
-    public void onItemSelected(int position, MovieModel item) {
+    public void onItemClicked(MovieModel item, int position) {
         MovieDetailsActivity.start(getContext(), item.getMovieId());
     }
 

@@ -19,7 +19,7 @@ android {
     }
 
     buildTypes.each {                                      // Put API_KEY here for requests
-        it.buildConfigField 'String', 'MOVIESDB_API_KEY', '"[API_KEY]"'
+        it.buildConfigField 'String', 'MOVIESDB_API_KEY', '"457076eb1307cb302a9ce7733d65b878"'
         it.buildConfigField 'String', 'BASE_MOVIE_URL', '"https://api.themoviedb.org/3/movie/"'
         it.buildConfigField 'String', 'BASE_IMAGE_URL', '"http://image.tmdb.org/t/p/w342"'
     }
@@ -32,7 +32,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:design:24.2.1'
 
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
