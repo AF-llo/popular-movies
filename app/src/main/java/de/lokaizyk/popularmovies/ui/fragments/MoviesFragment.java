@@ -127,6 +127,12 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        MoviesProvider.clearSubscriptions();
+    }
+
+    @Override
     public void onItemClicked(MovieModel item, int position) {
         MovieDetailsActivity.start(getContext(), item.getMovieId());
     }

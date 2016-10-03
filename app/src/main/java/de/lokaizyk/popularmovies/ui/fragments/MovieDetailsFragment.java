@@ -85,6 +85,12 @@ public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetai
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        MoviesProvider.clearSubscriptions();
+    }
+
+    @Override
     public void onSuccess(MovieDetails data) {
         movieDetails.set(data);
         isLoading.set(false);
