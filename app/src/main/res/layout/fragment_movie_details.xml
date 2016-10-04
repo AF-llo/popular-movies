@@ -115,9 +115,6 @@
                         android:text="@{movieDetailsFragment.movieDetails.overview}"
                         tools:text="Captain America: Civil War"/>
 
-                    <include
-                        layout="@layout/divider"/>
-
                     <LinearLayout
                         android:id="@+id/trailer_container"
                         android:layout_width="match_parent"
@@ -127,8 +124,11 @@
                         android:layout_marginRight="@dimen/spacing_m"
                         android:visibility="@{movieDetailsFragment.movieDetails.trailers.size() == 0 ? View.GONE : View.VISIBLE}">
 
+                        <include
+                            layout="@layout/divider"/>
+
                         <TextView
-                            style="@style/text_description"
+                            style="@style/text_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/trailer"/>
@@ -141,9 +141,6 @@
 
                     </LinearLayout>
 
-                    <include
-                        layout="@layout/divider"/>
-
                     <LinearLayout
                         android:id="@+id/reviews_container"
                         android:layout_width="match_parent"
@@ -153,8 +150,11 @@
                         android:layout_marginRight="@dimen/spacing_m"
                         android:visibility="@{movieDetailsFragment.movieDetails.reviews.size() == 0 ? View.GONE : View.VISIBLE}">
 
+                        <include
+                            layout="@layout/divider"/>
+
                         <TextView
-                            style="@style/text_description"
+                            style="@style/text_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/reviews"/>

@@ -1,8 +1,11 @@
 package de.lokaizyk.popularmovies.ui.fragments;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -35,6 +38,12 @@ public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetai
     private static final String EXTRA_ISLOADING = "extraKeyIsLoading";
 
     private static final String EXTRA_MOVIE_DETAILS = "extraKeyMovieDetails";
+
+    private static final String YOUTUBE_WEB_URL = "http://www.youtube.com/watch";
+
+    private static final String YOUTUBE_APP_URI = "vnd.youtube:";
+
+    private static final String YOUTUBE_QUERY_KEY_VIDEO = "v";
 
     public ObservableBoolean isLoading = new ObservableBoolean(false);
     
@@ -116,7 +125,20 @@ public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetai
 
     @Override
     public void onItemClicked(MovieVideo item, int position) {
-        Toast.makeText(getContext(), "Show video with key " + item.getKey(), Toast.LENGTH_SHORT).show();
+        Uri webUri = Uri.parse(YOUTUBE_WEB_URL)
+                .buildUpon()
+                .appendQueryParameter(YOUTUBE_QUERY_KEY_VIDEO, item.getKey())
+                .build();
+        Intent youtubeIntent = new Intent(Intent.ACTION_VIEW, webUri);
+
+        Uri appUri = Uri.parse(YOUTUBE_APP_URI + item.getKey());
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, appUri);
+        try {
+            startActivity(appIntent);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "Start video with app failed. Show in Browser");
+            startActivity(youtubeIntent);
+        }
     }
 
     @SuppressWarnings("unchecked")
