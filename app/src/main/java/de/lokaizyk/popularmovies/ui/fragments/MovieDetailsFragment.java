@@ -71,7 +71,8 @@ public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetai
         if (savedInstanceState != null) {
             Log.d(TAG, "retain savedInstanceState");
             isLoading = savedInstanceState.getParcelable(EXTRA_ISLOADING);
-            movieDetails = new ObservableField<>(savedInstanceState.getParcelable(EXTRA_MOVIE_DETAILS));
+            movieDetails = new ObservableField<>();
+            onSuccess(savedInstanceState.getParcelable(EXTRA_MOVIE_DETAILS));
         }
     }
 
