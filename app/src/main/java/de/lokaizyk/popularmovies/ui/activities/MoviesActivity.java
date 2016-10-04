@@ -5,6 +5,8 @@ import de.lokaizyk.popularmovies.databinding.ActivityMoviesBinding;
 
 public class MoviesActivity extends BaseBindingActivity<ActivityMoviesBinding> {
 
+    private static final String TAG = MoviesActivity.class.getSimpleName();
+
     @Override
     protected int getLayoutRessourceId() {
         return R.layout.activity_movies;
