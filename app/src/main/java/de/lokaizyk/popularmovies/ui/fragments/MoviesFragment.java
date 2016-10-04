@@ -23,6 +23,7 @@ import de.lokaizyk.popularmovies.ui.activities.MovieDetailsActivity;
 import de.lokaizyk.popularmovies.ui.activities.SettingsActivity;
 import de.lokaizyk.popularmovies.ui.adapter.BaseBindingRecyclerAdapter;
 import de.lokaizyk.popularmovies.ui.adapter.MoviesRecyclerAdapter;
+import de.lokaizyk.popularmovies.util.DeviceSettings;
 import de.lokaizyk.popularmovies.util.PrefHelper;
 
 /**
@@ -69,7 +70,7 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = getBinding().movieList;
         BaseBindingRecyclerAdapter adapter = new MoviesRecyclerAdapter();
-        int columnCount = 2; // TODO: 03.10.16 adapt for tablet layout
+        int columnCount = DeviceSettings.getColumnCount(getContext());
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), columnCount));
         recyclerView.setAdapter(adapter);
         if (savedInstanceState != null) {
