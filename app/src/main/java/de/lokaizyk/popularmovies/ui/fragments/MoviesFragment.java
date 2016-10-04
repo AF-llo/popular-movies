@@ -19,7 +19,6 @@ import de.lokaizyk.popularmovies.R;
 import de.lokaizyk.popularmovies.databinding.FragmentMoviesBinding;
 import de.lokaizyk.popularmovies.logic.MoviesProvider;
 import de.lokaizyk.popularmovies.logic.model.MovieModel;
-import de.lokaizyk.popularmovies.ui.activities.MovieDetailsActivity;
 import de.lokaizyk.popularmovies.ui.activities.SettingsActivity;
 import de.lokaizyk.popularmovies.ui.adapter.BaseBindingRecyclerAdapter;
 import de.lokaizyk.popularmovies.ui.adapter.MoviesRecyclerAdapter;
@@ -135,7 +134,7 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
 
     @Override
     public void onItemClicked(MovieModel item, int position) {
-        MovieDetailsActivity.start(getContext(), item.getMovieId());
+        ((Callback)getActivity()).onMovieSelected(item);
     }
 
     private void updateMovies(List<MovieModel> newMovies) {
@@ -146,5 +145,9 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
                 movies.addAll(newMovies);
             }
         }
+    }
+
+    public interface Callback {
+        void onMovieSelected(MovieModel movie);
     }
 }

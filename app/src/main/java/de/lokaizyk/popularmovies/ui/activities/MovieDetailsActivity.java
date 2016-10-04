@@ -34,7 +34,7 @@ public class MovieDetailsActivity extends BaseBindingActivity<ActivityMovieDetai
         }
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, fragment, MovieDetailsFragment.class.getSimpleName())
+                .replace(R.id.fragment_container, fragment, MovieDetailsFragment.TAG)
                 .commitAllowingStateLoss();
     }
 

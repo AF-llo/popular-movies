@@ -5,6 +5,7 @@ import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -20,7 +21,7 @@ import de.lokaizyk.popularmovies.ui.activities.MovieDetailsActivity;
  */
 public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetailsBinding> implements MoviesProvider.RequestListener<MovieDetails> {
 
-    private static final String TAG = MovieDetailsFragment.class.getSimpleName();
+    public static final String TAG = MovieDetailsFragment.class.getSimpleName();
 
     private static final String EXTRA_ISLOADING = "extraKeyIsLoading";
 
@@ -32,9 +33,11 @@ public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetai
 
     public static Fragment get(String movieId) {
         Fragment fragment = new MovieDetailsFragment();
-        Bundle arguments = new Bundle();
-        arguments.putString(MovieDetailsActivity.EXTRAS_MOVIE_ID, movieId);
-        fragment.setArguments(arguments);
+        if (!TextUtils.isEmpty(movieId)) {
+            Bundle arguments = new Bundle();
+            arguments.putString(MovieDetailsActivity.EXTRAS_MOVIE_ID, movieId);
+            fragment.setArguments(arguments);
+        }
         return fragment;
     }
 
@@ -50,7 +53,7 @@ public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetai
         if (savedInstanceState != null) {
             Log.d(TAG, "retain savedInstanceState");
             isLoading = savedInstanceState.getParcelable(EXTRA_ISLOADING);
-            movieDetails = new ObservableField<>((MovieDetails)savedInstanceState.getParcelable(EXTRA_MOVIE_DETAILS));
+            movieDetails = new ObservableField<>(savedInstanceState.getParcelable(EXTRA_MOVIE_DETAILS));
         }
     }
 
