@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="light_blue">#3F51B5</color>
-    <color name="dark_blue">#303F9F</color>
-    <color name="orange">#FF9800</color>
+    <color name="grey">#FF222222</color>
+    <color name="black">#FF000000</color>
+    <color name="turquoise">#FF019688</color>
     <color name="dark_grey">#424242</color>
+    <color name="text_grey">#FF767878</color>
+    <color name="button_turquoise">#FF86E3DA</color>
 </resources>

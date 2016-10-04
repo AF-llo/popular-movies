@@ -76,7 +76,7 @@ public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetai
     private void loadMovieDetails() {
         if (!isLoading.get() && movieDetails.get() == null) {
             isLoading.set(true);
-            MoviesProvider.loadMovieDetails(getArguments().getString(MovieDetailsActivity.EXTRAS_MOVIE_ID), this);
+            MoviesProvider.loadFullMovieDetails(getArguments().getString(MovieDetailsActivity.EXTRAS_MOVIE_ID), this);
         }
     }
 
@@ -91,6 +91,16 @@ public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetai
     public void onDestroy() {
         super.onDestroy();
         MoviesProvider.clearSubscriptions();
+    }
+
+    public void toggleFavorite(View view) {
+        if (movieDetails.get().isFavorite()) {
+            Toast.makeText(getContext(), "Remove from DB", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), "Write to DB", Toast.LENGTH_SHORT).show();
+        }
+        movieDetails.get().toggleFavorite();
+        movieDetails.notifyChange();
     }
 
     @Override

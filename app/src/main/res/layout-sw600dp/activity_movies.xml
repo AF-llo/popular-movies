@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
         <fragment
-            android:id="@+id/fragment_movies"
+            android:id="@+id/movies_fragment"
             android:name="de.lokaizyk.popularmovies.ui.fragments.MoviesFragment"
             android:layout_width="0dp"
             android:layout_height="match_parent"

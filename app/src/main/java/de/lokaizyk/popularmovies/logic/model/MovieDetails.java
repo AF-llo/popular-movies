@@ -3,6 +3,9 @@ package de.lokaizyk.popularmovies.logic.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by lars on 12.09.16.
  */
@@ -25,6 +28,12 @@ public class MovieDetails implements Parcelable {
     private String releaseDate = "";
 
     private String length = "";
+
+    private boolean isFavorite = false;
+
+    private List<MovieVideo> trailers = new ArrayList<>();
+
+    private List<MovieReview> reviews = new ArrayList<>();
 
     public String getTitle() {
         return title;
@@ -74,6 +83,34 @@ public class MovieDetails implements Parcelable {
         this.length = length;
     }
 
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void toggleFavorite() {
+        isFavorite = !isFavorite;
+    }
+
+    public List<MovieVideo> getTrailers() {
+        return trailers;
+    }
+
+    public void setTrailers(List<MovieVideo> trailers) {
+        if (trailers != null) {
+            this.trailers = trailers;
+        }
+    }
+
+    public List<MovieReview> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<MovieReview> reviews) {
+        if (reviews != null) {
+            this.reviews = reviews;
+        }
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -87,6 +124,9 @@ public class MovieDetails implements Parcelable {
         dest.writeString(this.votingRate);
         dest.writeString(this.releaseDate);
         dest.writeString(this.length);
+        dest.writeByte(this.isFavorite ? (byte) 1 : (byte) 0);
+        dest.writeTypedList(this.trailers);
+        dest.writeTypedList(this.reviews);
     }
 
     public MovieDetails() {
@@ -99,6 +139,9 @@ public class MovieDetails implements Parcelable {
         this.votingRate = in.readString();
         this.releaseDate = in.readString();
         this.length = in.readString();
+        this.isFavorite = in.readByte() != 0;
+        this.trailers = in.createTypedArrayList(MovieVideo.CREATOR);
+        this.reviews = in.createTypedArrayList(MovieReview.CREATOR);
     }
 
     public static final Parcelable.Creator<MovieDetails> CREATOR = new Parcelable.Creator<MovieDetails>() {

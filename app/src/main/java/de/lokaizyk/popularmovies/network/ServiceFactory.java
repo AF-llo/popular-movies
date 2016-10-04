@@ -1,5 +1,7 @@
 package de.lokaizyk.popularmovies.network;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
+
 import java.util.concurrent.TimeUnit;
 
 import de.lokaizyk.popularmovies.BuildConfig;
@@ -53,6 +55,7 @@ public class ServiceFactory<T> {
     protected OkHttpClient getOkHttpClient() {
         return new OkHttpClient.Builder()
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE))
+                .addNetworkInterceptor(new StethoInterceptor())
                 .readTimeout(60, TimeUnit.SECONDS)
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .build();

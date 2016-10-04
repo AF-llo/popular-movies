@@ -7,9 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,7 +16,6 @@ import de.lokaizyk.popularmovies.R;
 import de.lokaizyk.popularmovies.databinding.FragmentMoviesBinding;
 import de.lokaizyk.popularmovies.logic.MoviesProvider;
 import de.lokaizyk.popularmovies.logic.model.MovieModel;
-import de.lokaizyk.popularmovies.ui.activities.SettingsActivity;
 import de.lokaizyk.popularmovies.ui.adapter.BaseBindingRecyclerAdapter;
 import de.lokaizyk.popularmovies.ui.adapter.MoviesRecyclerAdapter;
 import de.lokaizyk.popularmovies.util.DeviceSettings;
@@ -40,6 +36,8 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
 
     public ObservableArrayList<MovieModel> movies = new ObservableArrayList<>();
 
+    private boolean sortingChanged = true;
+
     private MoviesProvider.RequestListener<List<MovieModel>> moviesListener = new MoviesProvider.RequestListener<List<MovieModel>>() {
         @Override
         public void onSuccess(List<MovieModel> data) {
@@ -59,7 +57,6 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         setRetainInstance(true);
     }
 
@@ -80,6 +77,15 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (sortingChanged) {
+            refreshMovies();
+            sortingChanged = false;
+        }
+    }
+
+    @Override
     protected int getLayoutId() {
         return R.layout.fragment_movies;
     }
@@ -90,40 +96,21 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        refreshMovies();
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(EXTRA_MOVIES, movies);
         outState.putParcelable(EXTRA_ISLOADING, isLoading);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_movies, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_refresh:
-                return true;
-            case R.id.action_settings:
-                SettingsActivity.start(getContext());
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void refreshMovies() {
+    public void refreshMovies() {
         if (!isLoading.get()) {
             isLoading.set(true);
             MoviesProvider.loadMovies(PrefHelper.getSortingSettings(getContext()), moviesListener);
         }
+    }
+
+    public void onSortingChanged() {
+        sortingChanged = true;
     }
 
     @Override
@@ -149,5 +136,6 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
 
     public interface Callback {
         void onMovieSelected(MovieModel movie);
+        void showFavouriteMovies();
     }
 }

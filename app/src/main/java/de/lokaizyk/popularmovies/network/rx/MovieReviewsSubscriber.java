@@ -1,16 +1,19 @@
 package de.lokaizyk.popularmovies.network.rx;
 
+import java.util.List;
+
 import de.lokaizyk.popularmovies.logic.MoviesProvider;
 import de.lokaizyk.popularmovies.logic.model.MovieReview;
 import de.lokaizyk.popularmovies.network.model.MovieReviewsResponse;
+import de.lokaizyk.popularmovies.util.ModelHelper;
 
 /**
  * Created by lars on 03.10.16.
  */
 
-public class MovieReviewsSubscriber extends RequestSubscriber<MovieReview, MovieReviewsResponse> {
+public class MovieReviewsSubscriber extends RequestSubscriber<List<MovieReview>, MovieReviewsResponse> {
 
-    public MovieReviewsSubscriber(MoviesProvider.RequestListener<MovieReview> requestListener) {
+    public MovieReviewsSubscriber(MoviesProvider.RequestListener<List<MovieReview>> requestListener) {
         super(requestListener);
     }
 
@@ -20,7 +23,6 @@ public class MovieReviewsSubscriber extends RequestSubscriber<MovieReview, Movie
             onError("MovieReviewsResponse was null");
             return;
         }
-        // TODO: 03.10.16 parse response to model
-        onSuccess(new MovieReview());
+        onSuccess(ModelHelper.reviewsFromResponse(movieReviewsResponse));
     }
 }
