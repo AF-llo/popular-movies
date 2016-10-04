@@ -106,7 +106,7 @@
                     </LinearLayout>
 
                     <TextView
-                        style="@style/text_dexscription"
+                        style="@style/text_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_m"
@@ -118,7 +118,54 @@
                     <include
                         layout="@layout/divider"/>
 
-                    <!-- todo add RecyclerView for trailers and reviews -->
+                    <LinearLayout
+                        android:id="@+id/trailer_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="@dimen/spacing_m"
+                        android:layout_marginRight="@dimen/spacing_m"
+                        android:visibility="@{movieDetailsFragment.movieDetails.trailers.size() == 0 ? View.GONE : View.VISIBLE}">
+
+                        <TextView
+                            style="@style/text_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/trailer"/>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/trailer_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_m"/>
+
+                    </LinearLayout>
+
+                    <include
+                        layout="@layout/divider"/>
+
+                    <LinearLayout
+                        android:id="@+id/reviews_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="@dimen/spacing_m"
+                        android:layout_marginRight="@dimen/spacing_m"
+                        android:visibility="@{movieDetailsFragment.movieDetails.reviews.size() == 0 ? View.GONE : View.VISIBLE}">
+
+                        <TextView
+                            style="@style/text_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/reviews"/>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/review_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_m"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

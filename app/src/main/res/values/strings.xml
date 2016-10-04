@@ -15,4 +15,7 @@
     <string name="favourite_movies">Favorit movies</string>
     <string name="add_to_favorites">ADD TO\nFAVORITES</string>
     <string name="remove_from_favorites">REMOVE FROM\nFAVORITES</string>
+    <string name="trailer">Trailer:</string>
+    <string name="reviews">Reviews:</string>
+    <string name="author">Author:</string>
 </resources>
