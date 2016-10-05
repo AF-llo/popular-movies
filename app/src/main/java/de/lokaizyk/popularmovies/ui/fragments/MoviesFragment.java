@@ -79,7 +79,7 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
     @Override
     public void onResume() {
         super.onResume();
-        if (sortingChanged) {
+        if (sortingChanged | PrefHelper.getSortingSettings(getContext()).equals(getString(R.string.pref_value_sorting_favorite))) {
             refreshMovies();
             sortingChanged = false;
         }
@@ -105,7 +105,12 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
     public void refreshMovies() {
         if (!isLoading.get()) {
             isLoading.set(true);
-            MoviesProvider.loadMovies(PrefHelper.getSortingSettings(getContext()), moviesListener);
+            String sorting = PrefHelper.getSortingSettings(getContext());
+            if (sorting.equals(getString(R.string.pref_value_sorting_favorite))) {
+                MoviesProvider.loadFavoriteMovies(moviesListener);
+            } else {
+                MoviesProvider.loadMovies(sorting, moviesListener);
+            }
         }
     }
 
@@ -136,6 +141,5 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
 
     public interface Callback {
         void onMovieSelected(MovieModel movie);
-        void showFavouriteMovies();
     }
 }

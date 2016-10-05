@@ -3,7 +3,6 @@ package de.lokaizyk.popularmovies.ui.activities;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import de.lokaizyk.popularmovies.R;
 import de.lokaizyk.popularmovies.databinding.ActivityMoviesBinding;
@@ -45,9 +44,6 @@ public class MoviesActivity extends BaseBindingActivity<ActivityMoviesBinding> i
             case R.id.action_settings:
                 SettingsActivity.start(this);
                 return true;
-            case R.id.action_favourite:
-                showFavouriteMovies();
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -66,17 +62,12 @@ public class MoviesActivity extends BaseBindingActivity<ActivityMoviesBinding> i
     @Override
     public void onMovieSelected(MovieModel movie) {
         if (DeviceSettings.isTablet(this)) {
-            Fragment fragment = MovieDetailsFragment.get(movie.getMovieId());
+            Fragment fragment = MovieDetailsFragment.get(movie);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, fragment, MovieDetailsFragment.TAG)
                     .commit();
         } else {
-            MovieDetailsActivity.start(this, movie.getMovieId());
+            MovieDetailsActivity.start(this, movie);
         }
-    }
-
-    @Override
-    public void showFavouriteMovies() {
-        Toast.makeText(this, "show favourite movies", Toast.LENGTH_SHORT).show();
     }
 }

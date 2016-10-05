@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by lars on 12.09.16.
  */
-public class MovieDetails implements Parcelable {
+public class MovieDetails extends MovieModel implements Parcelable {
 
     private static final String RATING_SEPERATOR = "/";
 
@@ -21,19 +21,19 @@ public class MovieDetails implements Parcelable {
 
     private String overview = "";
 
-    private String imageUrl = "";
-
     private String votingRate = "";
 
     private String releaseDate = "";
 
     private String length = "";
 
-    private boolean isFavorite = false;
-
     private List<MovieVideo> trailers = new ArrayList<>();
 
     private List<MovieReview> reviews = new ArrayList<>();
+
+    public MovieDetails(String imagePath, String movieId) {
+        super(imagePath, movieId);
+    }
 
     public String getTitle() {
         return title;
@@ -51,15 +51,11 @@ public class MovieDetails implements Parcelable {
         this.overview = overview;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public String getVotingRate() {
+        return votingRate;
+    }
+
+    public String getFormatedVotingRate() {
         return votingRate + RATING_SEPERATOR + MAX_RATING;
     }
 
@@ -76,19 +72,15 @@ public class MovieDetails implements Parcelable {
     }
 
     public String getLength() {
+        return length;
+    }
+
+    public String getFormattedLength() {
         return length + MIN_SUFFIX;
     }
 
     public void setLength(String length) {
         this.length = length;
-    }
-
-    public boolean isFavorite() {
-        return isFavorite;
-    }
-
-    public void toggleFavorite() {
-        isFavorite = !isFavorite;
     }
 
     public List<MovieVideo> getTrailers() {
@@ -118,33 +110,28 @@ public class MovieDetails implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
         dest.writeString(this.title);
         dest.writeString(this.overview);
-        dest.writeString(this.imageUrl);
         dest.writeString(this.votingRate);
         dest.writeString(this.releaseDate);
         dest.writeString(this.length);
-        dest.writeByte(this.isFavorite ? (byte) 1 : (byte) 0);
         dest.writeTypedList(this.trailers);
         dest.writeTypedList(this.reviews);
     }
 
-    public MovieDetails() {
-    }
-
     protected MovieDetails(Parcel in) {
+        super(in);
         this.title = in.readString();
         this.overview = in.readString();
-        this.imageUrl = in.readString();
         this.votingRate = in.readString();
         this.releaseDate = in.readString();
         this.length = in.readString();
-        this.isFavorite = in.readByte() != 0;
         this.trailers = in.createTypedArrayList(MovieVideo.CREATOR);
         this.reviews = in.createTypedArrayList(MovieReview.CREATOR);
     }
 
-    public static final Parcelable.Creator<MovieDetails> CREATOR = new Parcelable.Creator<MovieDetails>() {
+    public static final Creator<MovieDetails> CREATOR = new Creator<MovieDetails>() {
         @Override
         public MovieDetails createFromParcel(Parcel source) {
             return new MovieDetails(source);

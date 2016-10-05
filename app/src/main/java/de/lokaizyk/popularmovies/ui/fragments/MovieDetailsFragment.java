@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -20,8 +19,10 @@ import de.lokaizyk.popularmovies.R;
 import de.lokaizyk.popularmovies.databinding.FragmentMovieDetailsBinding;
 import de.lokaizyk.popularmovies.logic.MoviesProvider;
 import de.lokaizyk.popularmovies.logic.model.MovieDetails;
+import de.lokaizyk.popularmovies.logic.model.MovieModel;
 import de.lokaizyk.popularmovies.logic.model.MovieReview;
 import de.lokaizyk.popularmovies.logic.model.MovieVideo;
+import de.lokaizyk.popularmovies.persistance.DbManager;
 import de.lokaizyk.popularmovies.ui.activities.MovieDetailsActivity;
 import de.lokaizyk.popularmovies.ui.adapter.BaseBindingRecyclerAdapter;
 import de.lokaizyk.popularmovies.ui.adapter.ReviewsRecyclerAdapter;
@@ -49,11 +50,13 @@ public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetai
     
     public ObservableField<MovieDetails> movieDetails = new ObservableField<>();
 
-    public static Fragment get(String movieId) {
+    // TODO: 05.10.16 implement to autoupdate view when data has changed
+
+    public static Fragment get(MovieModel movie) {
         Fragment fragment = new MovieDetailsFragment();
-        if (!TextUtils.isEmpty(movieId)) {
+        if (movie != null) {
             Bundle arguments = new Bundle();
-            arguments.putString(MovieDetailsActivity.EXTRAS_MOVIE_ID, movieId);
+            arguments.putParcelable(MovieDetailsActivity.EXTRAS_MOVIE, movie);
             fragment.setArguments(arguments);
         }
         return fragment;
@@ -97,7 +100,15 @@ public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetai
     private void loadMovieDetails() {
         if (!isLoading.get() && movieDetails.get() == null) {
             isLoading.set(true);
-            MoviesProvider.loadFullMovieDetails(getArguments().getString(MovieDetailsActivity.EXTRAS_MOVIE_ID), this);
+            MovieModel movieModel = getArguments().getParcelable(MovieDetailsActivity.EXTRAS_MOVIE);
+            if (movieModel != null) {
+                // TODO: 05.10.16 check if exists in db and load else load from api 
+                if (movieModel.isFavorite()) {
+                    MoviesProvider.loadFavoriteMovie(movieModel.getMovieId(), this);
+                } else {
+                    MoviesProvider.loadFullMovieDetails(movieModel.getMovieId(), this);
+                }
+            }
         }
     }
 
@@ -116,9 +127,9 @@ public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetai
 
     public void toggleFavorite(View view) {
         if (movieDetails.get().isFavorite()) {
-            Toast.makeText(getContext(), "Remove from DB", Toast.LENGTH_SHORT).show();
+            DbManager.getInstance().deleteMovieDetails(movieDetails.get());
         } else {
-            Toast.makeText(getContext(), "Write to DB", Toast.LENGTH_SHORT).show();
+            DbManager.getInstance().insertOrUpdateMovieDetails(movieDetails.get());
         }
         movieDetails.get().toggleFavorite();
         movieDetails.notifyChange();

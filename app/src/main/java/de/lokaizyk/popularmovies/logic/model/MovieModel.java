@@ -10,9 +10,11 @@ import de.lokaizyk.popularmovies.BuildConfig;
  */
 public class MovieModel implements Parcelable {
 
-    private String imageUrl = "";
+    protected String imageUrl = "";
 
-    private String movieId = "";
+    protected String movieId = "";
+
+    protected boolean isFavorite = false;
 
     public MovieModel(String imagePath, String movieId) {
         setImageUrl(imagePath);
@@ -35,6 +37,18 @@ public class MovieModel implements Parcelable {
         return movieId;
     }
 
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    public void toggleFavorite() {
+        isFavorite = !isFavorite;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -44,11 +58,13 @@ public class MovieModel implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.imageUrl);
         dest.writeString(this.movieId);
+        dest.writeByte(this.isFavorite ? (byte) 1 : (byte) 0);
     }
 
     protected MovieModel(Parcel in) {
         this.imageUrl = in.readString();
         this.movieId = in.readString();
+        this.isFavorite = in.readByte() != 0;
     }
 
     public static final Parcelable.Creator<MovieModel> CREATOR = new Parcelable.Creator<MovieModel>() {

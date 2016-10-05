@@ -9,13 +9,18 @@ import android.text.TextUtils;
  */
 
 public class MovieReview implements Parcelable {
+
+    private String id = "";
+
     private String author = "";
 
     private String content = "";
 
-    public MovieReview(String author, String content) {
-        setAuthor(author);
-        setContent(content);
+    public MovieReview(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException("id must not be null");
+        }
+        this.id = id;
     }
 
     public String getAuthor() {
@@ -36,6 +41,10 @@ public class MovieReview implements Parcelable {
         if (!TextUtils.isEmpty(content)) {
             this.content = content;
         }
+    }
+
+    public String getId() {
+        return id;
     }
 
     @Override

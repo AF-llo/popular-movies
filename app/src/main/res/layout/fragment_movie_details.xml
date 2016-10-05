@@ -79,7 +79,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/spacing_xs"
                                 android:textSize="@dimen/text_size_m"
-                                android:text="@{movieDetailsFragment.movieDetails.votingRate}"
+                                android:text="@{movieDetailsFragment.movieDetails.formatedVotingRate}"
                                 tools:text="8.5/10"/>
 
                             <TextView
@@ -89,7 +89,7 @@
                                 android:layout_marginTop="@dimen/text_size_xs"
                                 android:textStyle="italic"
                                 android:textSize="@dimen/text_size_s"
-                                android:text="@{movieDetailsFragment.movieDetails.length}"
+                                android:text="@{movieDetailsFragment.movieDetails.formattedLength}"
                                 tools:text="120min"/>
 
                             <Button

@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import de.lokaizyk.popularmovies.R;
 import de.lokaizyk.popularmovies.databinding.ActivityMovieDetailsBinding;
+import de.lokaizyk.popularmovies.logic.model.MovieModel;
 import de.lokaizyk.popularmovies.ui.fragments.MovieDetailsFragment;
 
 /**
@@ -17,11 +18,11 @@ import de.lokaizyk.popularmovies.ui.fragments.MovieDetailsFragment;
  */
 public class MovieDetailsActivity extends BaseBindingActivity<ActivityMovieDetailsBinding> {
 
-    public static final String EXTRAS_MOVIE_ID = "extrasMovieId";
+    public static final String EXTRAS_MOVIE = "extrasMovie";
 
-    public static void start(Context context, String movieId) {
+    public static void start(Context context, MovieModel movie) {
         Intent intent = new Intent(context, MovieDetailsActivity.class);
-        intent.putExtra(EXTRAS_MOVIE_ID, movieId);
+        intent.putExtra(EXTRAS_MOVIE, movie);
         context.startActivity(intent);
     }
 
@@ -30,7 +31,7 @@ public class MovieDetailsActivity extends BaseBindingActivity<ActivityMovieDetai
         super.onCreate(savedInstanceState);
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(MovieDetailsFragment.class.getSimpleName());
         if (fragment == null) {
-            fragment = MovieDetailsFragment.get(getIntent().getExtras().getString(EXTRAS_MOVIE_ID));
+            fragment = MovieDetailsFragment.get(getIntent().getParcelableExtra(EXTRAS_MOVIE));
         }
         getSupportFragmentManager()
                 .beginTransaction()

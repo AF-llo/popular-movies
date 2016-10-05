@@ -20,6 +20,10 @@ import de.lokaizyk.popularmovies.network.rx.MovieDetailsZipper;
 import de.lokaizyk.popularmovies.network.rx.MovieReviewsSubscriber;
 import de.lokaizyk.popularmovies.network.rx.MovieTrailersSubscriber;
 import de.lokaizyk.popularmovies.network.rx.MoviesSubscriber;
+import de.lokaizyk.popularmovies.persistance.rx.AllFavoriteMovieLoader;
+import de.lokaizyk.popularmovies.persistance.rx.FavoriteMovieDetailsLoader;
+import de.lokaizyk.popularmovies.persistance.rx.FavoriteMovieDetailsSubscriber;
+import de.lokaizyk.popularmovies.persistance.rx.FavoriteMoviesSubscriber;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -34,6 +38,22 @@ public class MoviesProvider {
     private static final String TAG = MoviesProvider.class.getSimpleName();
 
     private static SubscriptionList mSubscriptionList = new SubscriptionList();
+
+    public static void loadFavoriteMovies(RequestListener<List<MovieModel>> listener) {
+        Subscription favoritMovieSubscription = AllFavoriteMovieLoader.get()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new FavoriteMoviesSubscriber(listener));
+        mSubscriptionList.add(favoritMovieSubscription);
+    }
+
+    public static void loadFavoriteMovie(String movieId, RequestListener<MovieDetails> listener) {
+        Subscription favoritMovieSubscription = FavoriteMovieDetailsLoader.get(movieId)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new FavoriteMovieDetailsSubscriber(listener));
+        mSubscriptionList.add(favoritMovieSubscription);
+    }
 
     public static void loadMovies(String sorting, RequestListener<List<MovieModel>> listener) {
         PopularMoviesApi moviesApi = PopularMoviesApiFactory.getInstance().createService();
