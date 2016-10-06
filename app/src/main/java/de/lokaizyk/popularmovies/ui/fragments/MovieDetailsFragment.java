@@ -102,12 +102,7 @@ public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetai
             isLoading.set(true);
             MovieModel movieModel = getArguments().getParcelable(MovieDetailsActivity.EXTRAS_MOVIE);
             if (movieModel != null) {
-                // TODO: 05.10.16 check if exists in db and load else load from api 
-                if (movieModel.isFavorite()) {
-                    MoviesProvider.loadFavoriteMovie(movieModel.getMovieId(), this);
-                } else {
-                    MoviesProvider.loadFullMovieDetails(movieModel.getMovieId(), this);
-                }
+                MoviesProvider.loadMovieDetails(movieModel.getMovieId(), this);
             }
         }
     }

@@ -8,8 +8,8 @@ import de.lokaizyk.popularmovies.network.rx.RequestSubscriber;
  * Created by lars on 05.10.16.
  */
 
-public class FavoriteMovieDetailsSubscriber extends RequestSubscriber<MovieDetails, MovieDetails> {
-    public FavoriteMovieDetailsSubscriber(MoviesProvider.RequestListener<MovieDetails> requestListener) {
+public class MovieDetailsSubscriber extends RequestSubscriber<MovieDetails, MovieDetails> {
+    public MovieDetailsSubscriber(MoviesProvider.RequestListener<MovieDetails> requestListener) {
         super(requestListener);
     }
 
