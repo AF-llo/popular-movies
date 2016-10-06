@@ -9,10 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Observer;
+
+import de.lokaizyk.popularmovies.persistance.DbManager;
+
 /**
  * Created by lars on 12.09.16.
  */
-public abstract class BaseBindingFragment<T extends ViewDataBinding> extends Fragment {
+public abstract class BaseBindingFragment<T extends ViewDataBinding> extends Fragment implements Observer {
 
     private T mBinding;
 
@@ -39,5 +43,17 @@ public abstract class BaseBindingFragment<T extends ViewDataBinding> extends Fra
 
     public T getBinding() {
         return mBinding;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        DbManager.getInstance().registerForContentChange(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        DbManager.getInstance().unregisterForContentChange(this);
     }
 }

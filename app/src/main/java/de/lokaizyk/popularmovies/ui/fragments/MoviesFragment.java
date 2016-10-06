@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Observable;
 
 import de.lokaizyk.popularmovies.R;
 import de.lokaizyk.popularmovies.databinding.FragmentMoviesBinding;
@@ -111,6 +112,14 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
             } else {
                 MoviesProvider.loadMovies(sorting, moviesListener);
             }
+        }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        String sorting = PrefHelper.getSortingSettings(getContext());
+        if (sorting.equals(getString(R.string.pref_value_sorting_favorite))) {
+            refreshMovies();
         }
     }
 

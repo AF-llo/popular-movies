@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.Observable;
+
 import de.lokaizyk.popularmovies.R;
 import de.lokaizyk.popularmovies.databinding.FragmentMovieDetailsBinding;
 import de.lokaizyk.popularmovies.logic.MoviesProvider;
@@ -126,6 +128,10 @@ public class MovieDetailsFragment extends BaseBindingFragment<FragmentMovieDetai
         } else {
             DbManager.getInstance().insertOrUpdateMovieDetails(movieDetails.get());
         }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
         movieDetails.get().toggleFavorite();
         movieDetails.notifyChange();
     }

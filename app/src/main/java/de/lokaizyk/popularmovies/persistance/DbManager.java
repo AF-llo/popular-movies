@@ -2,9 +2,12 @@ package de.lokaizyk.popularmovies.persistance;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
+import android.util.Log;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.Observer;
 
 import de.lokaizyk.popularmovies.logic.model.MovieDetails;
 import de.lokaizyk.popularmovies.logic.model.MovieReview;
@@ -22,6 +25,8 @@ import de.lokaizyk.popularmovies.util.ModelHelper;
 
 public class DbManager {
 
+    private static final String TAG = DbManager.class.getSimpleName();
+
     private static final String DB_NAME = "popularMovies";
 
     /**
@@ -34,8 +39,11 @@ public class DbManager {
 
     private DaoSession daoSession;
 
+    private DbContentObservable contentObservable;
+
     private DbManager(Context context) {
         mContext = new WeakReference<>(context);
+        contentObservable = new DbContentObservable();
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(mContext.get(), DB_NAME);
         SQLiteDatabase database = helper.getWritableDatabase();
         daoSession = new DaoMaster(database).newSession();
@@ -81,6 +89,7 @@ public class DbManager {
             reviewDao.insertOrReplace(ModelHelper.movieReviewToDbModel(movieDetails.getMovieId(), review));
         }
         daoSession.getDbMovieDetailsDao().insertOrReplace(ModelHelper.movieDetailsAsDbModel(movieDetails));
+        notifyObserver();
     }
 
     public synchronized void deleteMovieDetails(MovieDetails movieDetails) {
@@ -93,10 +102,29 @@ public class DbManager {
             reviewDao.delete(ModelHelper.movieReviewToDbModel(movieDetails.getMovieId(), review));
         }
         daoSession.getDbMovieDetailsDao().delete(ModelHelper.movieDetailsAsDbModel(movieDetails));
+        notifyObserver();
     }
 
     public DbMovieDetails loadFavoriteMovie(String id) {
         return daoSession.getDbMovieDetailsDao().load(id);
+    }
+
+    public void registerForContentChange(Observer observer) {
+        contentObservable.addObserver(observer);
+    }
+
+    public void unregisterForContentChange(Observer observer) {
+        contentObservable.deleteObserver(observer);
+    }
+
+    public void notifyObserver() {
+        Log.d(TAG, "notifyObserver");
+        new Handler().post(() -> {
+            if (contentObservable != null) {
+                contentObservable.setChangedNow();
+                contentObservable.notifyObservers();
+            }
+        });
     }
 
     private static class DbManagerNotInitializedException extends RuntimeException {
