@@ -33,6 +33,8 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
 
     private static final String EXTRA_ISLOADING = "extraKeyLoading";
 
+    private static final String EXTRA_SORTING_CHANGED = "extraSortingChanged";
+
     public ObservableBoolean isLoading = new ObservableBoolean(false);
 
     public ObservableArrayList<MovieModel> movies = new ObservableArrayList<>();
@@ -74,6 +76,7 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
             Log.d(TAG, "retain savedInstanceState");
             movies = (ObservableArrayList) savedInstanceState.getParcelableArrayList(EXTRA_MOVIES);
             isLoading = savedInstanceState.getParcelable(EXTRA_ISLOADING);
+            sortingChanged = savedInstanceState.getBoolean(EXTRA_SORTING_CHANGED);
         }
     }
 
@@ -101,6 +104,7 @@ public class MoviesFragment extends BaseBindingFragment<FragmentMoviesBinding> i
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(EXTRA_MOVIES, movies);
         outState.putParcelable(EXTRA_ISLOADING, isLoading);
+        outState.putBoolean(EXTRA_SORTING_CHANGED, sortingChanged);
     }
 
     public void refreshMovies() {
