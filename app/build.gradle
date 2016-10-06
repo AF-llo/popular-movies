@@ -26,7 +26,7 @@ android {
     }
 
     buildTypes.each {                                      // Put API_KEY here for requests
-        it.buildConfigField 'String', 'MOVIESDB_API_KEY', '"457076eb1307cb302a9ce7733d65b878"'
+        it.buildConfigField 'String', 'MOVIESDB_API_KEY', '"[API-KEY]"'
         it.buildConfigField 'String', 'BASE_MOVIE_URL', '"https://api.themoviedb.org/"'
         it.buildConfigField 'String', 'BASE_IMAGE_URL', '"http://image.tmdb.org/t/p/w342"'
     }
