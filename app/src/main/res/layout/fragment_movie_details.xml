@@ -92,13 +92,12 @@
                                 android:text="@{movieDetailsFragment.movieDetails.formattedLength}"
                                 tools:text="120min"/>
 
-                            <Button
-                                style="@style/button_style"
+                            <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/text_size_xs"
-                                android:padding="@dimen/spacing_s"
-                                app:favoriteText="@{movieDetailsFragment.movieDetails.isFavorite}"
+                                android:padding="@dimen/text_size_m"
+                                tools:src="@drawable/ic_favorite"
+                                app:favoriteIcon="@{movieDetailsFragment.movieDetails.isFavorite}"
                                 android:onClick="@{movieDetailsFragment.toggleFavorite}"/>
 
                         </LinearLayout>

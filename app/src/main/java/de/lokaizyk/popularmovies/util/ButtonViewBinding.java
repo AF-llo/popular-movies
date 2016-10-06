@@ -1,7 +1,7 @@
 package de.lokaizyk.popularmovies.util;
 
 import android.databinding.BindingAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
 
 import de.lokaizyk.popularmovies.R;
 
@@ -10,12 +10,12 @@ import de.lokaizyk.popularmovies.R;
  */
 
 public class ButtonViewBinding {
-    @BindingAdapter("bind:favoriteText")
-    public static void setFavoriteText(Button button, boolean isFavourite) {
+    @BindingAdapter("bind:favoriteIcon")
+    public static void setFavoriteIcon(ImageView imageView, boolean isFavourite) {
         if (isFavourite) {
-            button.setText(button.getContext().getString(R.string.remove_from_favorites));
+            imageView.setImageResource(R.drawable.ic_favorite);
         } else {
-            button.setText(button.getContext().getString(R.string.add_to_favorites));
+            imageView.setImageResource(R.drawable.ic_no_favorite);
         }
     }
 }
